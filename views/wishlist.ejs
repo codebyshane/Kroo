@@ -1,0 +1,83 @@
+<%- include('partials/header') -%>
+<div class="container">
+  <div class="row justify-content-center mt-5">
+    <div class="col-6">
+      <h2><%= wishlist.title %></h2>
+      <img class="img-fluid" src="<%= wishlist.image%>" />
+      <div class="row justify-content-between">
+        <form
+          class="col-1"
+          action="/wishlist/likeWishlist/<%= wishlist.id %>?_method=PUT"
+          method="POST"
+        >
+          <button class="btn btn-primary fa fa-heart" type="submit"></button>
+        </form>
+        <h3 class="col-3">Likes: <%= wishlist.likes %></h3>
+        <%if(wishlist.user == user.id){ %>
+        <form
+          action="/wishlist/deleteWishlist/<%= wishlist.id %>?_method=DELETE"
+          method="POST"
+          class="col-3"
+        >
+          <button class="btn btn-primary fa fa-trash" type="submit"></button>
+        </form>
+        <form
+          action="/wishlist/editWishlist/<%= wishlist.id %>?_method=PATCH"
+          method="POST"
+          class="col-3"
+        >
+        <button type="button" class="btn btn-warning fa fa-edit" data-bs-toggle="modal" data-bs-target="#editWishlist-<%= wishlist.id %>"></button>
+        </form>
+        <%}%>
+        <%if(!wishlist.deleted && wishlist.user._id == user.id){ %>
+
+					<div class="modal fade" id="editWishlist-<%= wishlist.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<form class="modal-content" action="/wishlist/editWishlist/<%= wishlist.id %>?_method=PATCH" method="POST">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLabel">Edit Wishlist</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
+								</div>
+								<div class="modal-body">
+									<div class="mb-3">
+										<label for="text" class="form-label">Edited Wishlist</label>
+										<textarea class="form-control" id="title" name="title"><%= wishlist.title %></textarea>
+										<textarea class="form-control" id="caption" name="caption"><%= wishlist.caption %></textarea>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+									<button class="btn btn-primary">Update Wishlist</button>
+								</div>
+							</form>
+						</div>
+					</div>
+        <%}%>
+      </div>
+    </div>
+    <div class="col-3 mt-5">
+      <p><%= wishlist.caption %></p>
+    </div>
+    <div class="mt-5">
+      <h2>Add a comment</h2>
+      <form action="/wishlistComment/createComment/<%= wishlist.id %>" method="POST">
+        <div class="mb-3">
+          <label for="text" class="form-label">Text</label>
+          <textarea class="form-control" id="text" name="text"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+    <ul class="row list-unstyled">
+    <% for(var i=0; i<comments.length; i++) {%>
+      <%- include('partials/wishlistComment', { wishlistId: wishlist.id, userId: user.id, comment: comments[i], depth: 0 }) -%>
+    <% } %>
+    </ul>
+    <div class="col-6 mt-5">
+      <a class="btn btn-primary" href="/profile">Return to Profile</a>
+      <a class="btn btn-primary" href="/feed">Return to Feed</a>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') -%>

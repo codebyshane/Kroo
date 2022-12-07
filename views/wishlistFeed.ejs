@@ -1,0 +1,81 @@
+<%- include('partials/header') -%>
+    <!-- <form
+      action="/wishlist/createWishlist" 
+      enctype="multipart/form-data" 
+      method="POST"
+    >
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createWishlist-<%= wishlists.id %>"></button>
+    </form>
+    <div class="modal fade" id="createWishlist-<%= wishlists.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" action="/wishlist/createWishlist" method="POST">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Create Wishlist</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="title" class="form-label">Wishlist Title</label>
+              <textarea class="form-control" id="title" name="title"><%= wishlists.title %></textarea>
+              <label for="caption" class="form-label">Wishlist Caption</label>
+              <textarea class="form-control" id="caption" name="caption"><%= wishlists.caption %></textarea>
+              <label for="imageUpload" class="form-label">Wishlist Image</label>
+              <input type="file" class="form-control" id="imageUpload" name="file"><%= wishlists.imageUpload %></input>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary" value="Upload">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div> -->
+  <div class="mt-5">
+    <h2>Add a Wishlist</h2>
+    <form action="/wishlist/createWishlist" enctype="multipart/form-data" method="POST">
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" class="form-control" id="title" name="title">
+      </div>
+      <div class="mb-3">
+        <label for="caption" class="form-label">Caption</label>
+        <textarea class="form-control" id="caption" name="caption"></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="imgUpload" class="form-label">Image</label>
+        <input type="file" class="form-control" id="imageUpload" name="file">
+      </div>
+      <!-- <form>
+        <p>
+            <label>Item:</label> <input type="text">
+            <label>Link:</label> <input type="text">
+            <label>Comments:</label> <input type="text">
+            <span class="remove">Remove</span>
+        </p>
+        <p>
+            <span class="add">Add item</span>
+        </p>
+    </form> -->
+      <button type="submit" class="btn btn-primary" value="Upload">Submit</button>
+    </form>
+  </div>
+  <div class="container">
+    <div class="row justify-content-center mt-5">
+      <ul class="row list-unstyled">
+        <% for(var i=0; i<wishlists.length; i++) {%>
+          <li class="col-6 justify-content-between mt-5">
+            <a class= "card-anchor" href="/wishlist/<%= wishlists[i]._id%>">
+              <div class="card" style="width: 18rem;">
+                <img class="img-fluid card-img-top" src="<%= wishlists[i].image%>">
+                <div class="card-body">
+                  <h5 class="card-title"><%= wishlists[i].title%></h5>
+                  <p class="card-text"><%= wishlists[i].caption%></p>
+                </div>
+              </div>
+            </a>
+          </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>    
+<%- include('partials/footer') -%>

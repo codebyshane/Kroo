@@ -1,0 +1,83 @@
+<%- include('partials/header') -%>
+<div class="container">
+  <div class="row justify-content-center mt-5">
+    <div class="col-6">
+      <h2><%= recipe.title %></h2>
+      <img class="img-fluid" src="<%= recipe.image%>" />
+      <div class="row justify-content-between">
+        <form
+          class="col-1"
+          action="/recipe/likeRecipe/<%= recipe.id %>?_method=PUT"
+          method="POST"
+        >
+          <button class="btn btn-primary fa fa-heart" type="submit"></button>
+        </form>
+        <h3 class="col-3">Likes: <%= recipe.likes %></h3>
+        <%if(recipe.user == user.id){ %>
+        <form
+          action="/recipe/deleteRecipe/<%= recipe.id %>?_method=DELETE"
+          method="POST"
+          class="col-3"
+        >
+          <button class="btn btn-primary fa fa-trash" type="submit"></button>
+        </form>
+        <form
+          action="/recipe/editRecipe/<%= recipe.id %>?_method=PATCH"
+          method="POST"
+          class="col-3"
+        >
+        <button type="button" class="btn btn-warning fa fa-edit" data-bs-toggle="modal" data-bs-target="#editRecipe-<%= recipe.id %>"></button>
+        </form>
+        <%}%>
+        <%if(!recipe.deleted && recipe.user._id == user.id){ %>
+
+					<div class="modal fade" id="editRecipe-<%= recipe.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<form class="modal-content" action="/recipe/editRecipe/<%= recipe.id %>?_method=PATCH" method="POST">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLabel">Edit Recipe</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cancel"></button>
+								</div>
+								<div class="modal-body">
+									<div class="mb-3">
+										<label for="text" class="form-label">Edited Recipe</label>
+										<textarea class="form-control" id="title" name="title"><%= recipe.title %></textarea>
+										<textarea class="form-control" id="caption" name="caption"><%= recipe.caption %></textarea>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+									<button class="btn btn-primary">Update Recipe</button>
+								</div>
+							</form>
+						</div>
+					</div>
+        <%}%>
+      </div>
+    </div>
+    <div class="col-3 mt-5">
+      <p><%= recipe.caption %></p>
+    </div>
+    <div class="mt-5">
+      <h2>Add a comment</h2>
+      <form action="/recipeComment/createComment/<%= recipe.id %>" method="POST">
+        <div class="mb-3">
+          <label for="text" class="form-label">Text</label>
+          <textarea class="form-control" id="text" name="text"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+    <ul class="row list-unstyled">
+    <% for(var i=0; i<comments.length; i++) {%>
+      <%- include('partials/recipeComment', { recipeId: recipe.id, userId: user.id, comment: comments[i], depth: 0 }) -%>
+    <% } %>
+    </ul>
+    <div class="col-6 mt-5">
+      <a class="btn btn-primary" href="/profile">Return to Profile</a>
+      <a class="btn btn-primary" href="/feed">Return to Feed</a>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') -%>

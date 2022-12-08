@@ -27,7 +27,7 @@
             - date of event
             - time frame of event (i.e. Show up anytime between 8-12pm, or show up promptly at 5pm, or show up no later than 6pm)
             - address of event
-            - desciption of event
+            - description of event
         - optional information:
             - invitees and rsvp
             - rendezvous point
